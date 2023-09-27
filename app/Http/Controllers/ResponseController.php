@@ -10,15 +10,15 @@ class ResponseController extends Controller
     {
         return $this->ApiResponse($data,[],$message,true,$code);
     }
-    public function fail($error,$message,$code)
+    public function fail($errors,$message,$code)
     {
-        return $this->ApiResponse([],$error,$message,false,$code);
+        return $this->ApiResponse([],$errors,$message,false,$code);
     }
     public function ApiResponse($data,$error,$message,$condition,$code)
     {
         return response()->json([
             "data" => $data,
-            "error" => $error,
+            "errors" => $error,
             "message" => $message,
             "condition" => $condition
         ],$code);

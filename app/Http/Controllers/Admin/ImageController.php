@@ -10,13 +10,18 @@ use App\Http\Controllers\ResponseController;
 
 class ImageController extends ResponseController
 {
+    public function index()
+    {
+        return $this->success(Image::paginate(10) , "All images" , 200);
+    }
+
     public function store()
     {
         $validator = Validator::make(Request()->all(),[
             "image" => "required|mimes:jpg,png,jpeg"
         ]);
         if($validator->fails()) {
-            return $this->fail($validator->errors(),"Validation fail",422);
+            return $this->fail($validator->errors(),"Validation failed",422);
         }
         $image = Request()->file('image');
         $imageName = time()."_".$image->getClientOriginalName();
@@ -24,6 +29,6 @@ class ImageController extends ResponseController
         $data=new Image();
         $data->image = $imageName;
         $data->save();
-        return $this->success($data,"successfully created the Image",201);
+        return $this->success($data,"Image uploaded successfully.",201);
     }
 }

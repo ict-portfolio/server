@@ -63,4 +63,14 @@ class CategoryController extends ResponseController
             return $this->fail(["message" => "Category doesn't exist"],"Not Found",404);
         }
     }
+
+    public function destroy($category) {
+        $data = Category::where('id' , $category)->first();
+        if ($data) {
+            $data->delete();
+            return $this->success([] , "Deleted category successfully" , 200);
+        } else {
+            return $this->fail([] , "Category Not Found" , 404);
+        }
+    }
 }
