@@ -16,35 +16,34 @@ class CategoryController extends ResponseController
     {
         return $this->success(CategoryResource::collection(Category::with('image')->get()),"category datas");
     }
-    public function store()
+    public function store(Request $request)
     {
-        $validator = Validator::make(Request()->all(),[
+        $validator = Validator::make($request->all(),[
             "name" => "required|min:3|unique:categories,name",
             "image_id" => "required"
         ]);
         if($validator->fails()) {
             return $this->fail($validator->errors(),"Validation Fail",422);
         }
-        $data = new Category([
-            'name' => Request('name'),
-            'image_id' => Request('image_id'),
-            'slug'=> Str::slug(Request('name'))
+        $data = Category::create([
+            "name" => $request->name,
+            "image_id" => $request->image_id,
+            "id" => Str::slug($request->name),
         ]);
-        $data->save();
         return $this->success($data,"Successfully Created the ".$data->name,201);
     }
-    public function show($slug)
+    public function show($id)
     {
-        $data = Category::where('slug',$slug)->with('image')->first();
+        $data = Category::where('id',$id)->with('image')->first();
         if($data) {
             return $this->success(new CategoryResource($data),"detail of ".$data->name);
         }else {
             return $this->fail(["message" => "Category doesn't exist"],"Not Found",404);
         }
     }
-    public function update($slug)
+    public function update(Request $request, $id)
     {
-        $data = Category::where('slug',$slug)->first();
+        $data = Category::where('id',$id)->first();
         if($data) {
             $validator = Validator::make(Request()->all(),[
                 "name" => "required|min:3|unique:categories,name",
@@ -54,9 +53,9 @@ class CategoryController extends ResponseController
                 return $this->fail($validator->errors(),"Validation Fail",422);
             }
             $data->update([
-                'name' => Request('name'),
-                'image_id' => Request('image_id'),
-                'slug'=> Str::slug(Request('name'))
+                'name' => $request->name,
+                'image_id' => $request->image_id,
+                'id'=> Str::slug($request->id)
             ]);
             return $this->success(new CategoryResource($data),"successfully updated the ".$data->name);
         }else {
