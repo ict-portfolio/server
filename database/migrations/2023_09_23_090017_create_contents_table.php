@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('category_id');
             $table->integer('image_id');
             $table->string('name');
-            $table->string('tags');
+            // $table->string('tags');
             $table->string('slug');
             $table->text('description');
             $table->text('paragraph');

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class,'image_id');
+    }
 }

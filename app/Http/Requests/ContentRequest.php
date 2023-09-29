@@ -27,7 +27,6 @@ class ContentRequest extends FormRequest
             "name" => "required|min:3|unique:contents,name",
             "category_id" => "required",
             "image_id" => "required",
-            "tags" => "required",
             "description" => "required",
             "paragraph" => "required",
             "status" => "required"
