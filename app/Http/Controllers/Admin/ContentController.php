@@ -20,7 +20,7 @@ class ContentController extends ResponseController
     }
     public function store(ContentRequest $req)
     {
-        $content = Request(["name","category_id","tags","image_id","description","status","paragraph"]);
+        $content = Request(["name","category_id","image_id","description","status","paragraph"]);
         $content['slug'] = Str::slug(Request()->name);
         $data = new Content($content);
         $data->save();

@@ -49,7 +49,7 @@ class SliderController extends ResponseController
                 return $this->fail($validator->errors(),"Validation failed",422);
             }
             $data->update(Request(["image_id","status"]));
-            return $this->success($data,"successfully created the slider",201);
+            return $this->success($data,"successfully created the slider",200);
         }else {
             return $this->fail(["message" => "slider doesn't exist"],"Not Found",404);
         }
