@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class ContentRequest extends FormRequest
+class ServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,16 @@ class ContentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|min:3|unique:contents,name",
-            "category_id" => "required",
             "image_id" => "required",
-            "description" => "required",
-            "paragraph" => "required",
-            "status" => "required"
+            "name" => "required|min:3",
+            "paragraph" => "required"
         ];
     }
     protected function failedValidation(Validator $validator)
     {
         throw new ValidationException($validator,response()->json([
             "errors" => $validator->errors(),
-            "message" => "validation errors"
+            "message" => "validation fail"
         ],422));
     }
 }

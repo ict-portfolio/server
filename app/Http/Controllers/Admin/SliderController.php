@@ -15,7 +15,7 @@ class SliderController extends ResponseController
     {
         return $this->success(SliderResource::collection(Slider::with('image')->get()),"slider datas");
     }
-    public function store()
+    public function store(Request $request)
     {
         $validator = Validator::make(request()->all(),[
             "image_id" => "required",
@@ -24,7 +24,10 @@ class SliderController extends ResponseController
         if($validator->fails()){
             return $this->fail($validator->errors(),"Validation failed",422);
         }
-        $data = new Slider(Request(["image_id","status"]));
+        $data = new Slider([
+            "image_id" => $request->image_id,
+            "status" => $request->status
+        ]);
         $data->save();
         return $this->success($data,"successfully created the slider",201);
     }
@@ -37,9 +40,9 @@ class SliderController extends ResponseController
             return $this->fail(["message" => "slider doesn't exist"],"Not Found",404);
         }
     }
-    public function update($id)
+    public function update(Request $request,$id)
     {
-        $data = Slider::where('id',$id)->with('image')->first();
+        $data = Slider::where('id',$id)->first();
         if($data) {
             $validator = Validator::make(request()->all(),[
                 "image_id" => "required",
@@ -48,8 +51,11 @@ class SliderController extends ResponseController
             if($validator->fails()){
                 return $this->fail($validator->errors(),"Validation failed",422);
             }
-            $data->update(Request(["image_id","status"]));
-            return $this->success($data,"successfully created the slider",201);
+            $data->update([
+                "image_id" => $request->image_id,
+                "status" => $request->status
+            ]);
+            return $this->success($data,"successfully created the slider");
         }else {
             return $this->fail(["message" => "slider doesn't exist"],"Not Found",404);
         }

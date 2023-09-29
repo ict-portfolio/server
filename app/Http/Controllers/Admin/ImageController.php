@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Image;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -30,5 +31,19 @@ class ImageController extends ResponseController
         $data->image = $imageName;
         $data->save();
         return $this->success($data,"Image uploaded successfully.",201);
+    }
+    public function destroy($id)
+    {
+        $image = Image::where('id',$id)->first();
+        if($image) {
+            $slider = Slider::where('id',$id)->first();
+            if($slider) {
+                $slider->delete();
+            }
+            $image->delete();
+            return $this->success([],"deleted");
+        }else {
+            return $this->fail(["message" => "image doesn't exist "],"not found",404);
+        }
     }
 }
