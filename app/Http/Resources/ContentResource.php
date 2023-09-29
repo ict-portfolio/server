@@ -21,6 +21,7 @@ class ContentResource extends JsonResource
             "status" => $this->status,
             "paragraph" => $this->paragraph,
             "slug" => $this->slug,
+            "created_at" => $this->created_at->format('d-m-y'),
             "image_id" => $this->image_id,
             "image" => $this->whenLoaded('image'),
             "category_id" => $this->category_id,

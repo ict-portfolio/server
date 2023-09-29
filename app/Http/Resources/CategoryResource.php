@@ -22,7 +22,6 @@ class CategoryResource extends JsonResource
             "image_id" => $this->image_id,
             "image" => $this->whenLoaded('image'),
             "created_at" => $this->created_at->format('d-m-y'),
-            "updated_at" => $this->updated_at->format('d-m-y'),
         ];
     }
 }
