@@ -28,7 +28,7 @@ class CategoryController extends ResponseController
         $data = Category::create([
             "name" => $request->name,
             "image_id" => $request->image_id,
-            "id" => Str::slug($request->name),
+            "slug" => Str::slug($request->name),
         ]);
         return $this->success($data,"Successfully Created the ".$data->name,201);
     }
@@ -46,7 +46,7 @@ class CategoryController extends ResponseController
         $data = Category::where('id',$id)->first();
         if($data) {
             $validator = Validator::make(Request()->all(),[
-                "name" => "required|min:3|unique:categories,name",
+                "name" => "required|min:3",
                 "image_id" => "required"
             ]);
             if($validator->fails()) {

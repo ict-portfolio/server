@@ -20,9 +20,12 @@ class ServiceController extends ResponseController
     public function store(ServiceRequest $request)
     {
         $data = $request->validated();
-        $data['slug'] = Str::slug($request->name);
-        $service = new Service($data);
-        $service->save();
+        $service = Service::create([
+            "name" => $request->name,
+            "image_id" => $request->image_id,
+            "paragraph" =>$request->paragraph,
+            "slug" => Str::slug($request->name)
+        ]);
         return $this->success($service, "Created service",201);
     }
     public function show($id)
