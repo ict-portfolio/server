@@ -29,7 +29,7 @@ class SliderController extends ResponseController
             "status" => $request->status
         ]);
         $data->save();
-        return $this->success($data,"successfully created the slider",201);
+        return $this->success($data,"Added to slider",201);
     }
     public function show($id)
     {
@@ -56,6 +56,17 @@ class SliderController extends ResponseController
                 "status" => $request->status
             ]);
             return $this->success($data,"successfully created the slider");
+        }else {
+            return $this->fail(["message" => "slider doesn't exist"],"Not Found",404);
+        }
+    }
+
+    public function destroy($slider)
+    {
+        $data = Slider::where('id',$slider)->first();
+        if($data) {
+            $data->delete();
+            return $this->success([] , "Removed from slider" , 200);
         }else {
             return $this->fail(["message" => "slider doesn't exist"],"Not Found",404);
         }
