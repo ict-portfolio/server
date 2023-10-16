@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->get('/user', [UserController::class , 'show']);
+Route::get('/users' , [UserController::class , 'index']);
+Route::post('/register' , [UserController::class , 'register'])->name('register');
+Route::post('/login' , [UserController::class , 'login'])->name('login');
+
 Route::get('/get-sliders',[ClientController::class,'getSliders']);
 
 Route::get('/get-categories',[ClientController::class,'getCategories']);
