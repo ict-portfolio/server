@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Client\ClientController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/get-sliders',[ClientController::class,'getSliders']);
-Route::get('/get-contents',[ClientController::class,'getContents']);
+
 Route::get('/get-categories',[ClientController::class,'getCategories']);
+Route::get('/get-contents-by-category/{category}' , [ClientController::class , 'contentsByCategory']);
+
+Route::get('/get-contents',[ClientController::class,'getContents']);
+Route::get('/get-limited-contents',[ClientController::class,'getLimitedContents']);
+Route::get('/get-contents/{content}' , [ClientController::class , 'getContent']);
+
 Route::get('/get-services',[ClientController::class,'getServices']);
+Route::get('/get-limited-services',[ClientController::class,'getLimitedServices']);
+Route::get('/get-services/{service}' , [ClientController::class , 'getService']);
+
+Route::post('/contact' , [ContactController::class , 'store']);

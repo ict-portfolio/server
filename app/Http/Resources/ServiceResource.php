@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +19,8 @@ class ServiceResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "paragraph" => $this->paragraph,
-            "created_at" => $this->created_at->format('d-m-y'),
+            "slug" => $this->slug,
+            "created_at" => Carbon::parse($this->created_at)->format('j-F-Y'),
             "image_id" => $this->image_id,
             "image" => $this->whenLoaded('image'),
         ];

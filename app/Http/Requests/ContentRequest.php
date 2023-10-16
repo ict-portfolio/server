@@ -24,7 +24,7 @@ class ContentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|min:3|unique:contents,name",
+            "name" => "required|min:3",
             "category_id" => "required",
             "image_id" => "required",
             "description" => "required",
