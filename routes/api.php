@@ -18,12 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', [UserController::class , 'show']);
-Route::get('/users' , [UserController::class , 'index']);
 Route::post('/register' , [UserController::class , 'register'])->name('register');
 Route::post('/login' , [UserController::class , 'login'])->name('login');
 
 Route::get('/get-sliders',[ClientController::class,'getSliders']);
-
 Route::get('/get-categories',[ClientController::class,'getCategories']);
 Route::get('/get-contents-by-category/{category}' , [ClientController::class , 'contentsByCategory']);
 
