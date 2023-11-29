@@ -23,12 +23,17 @@ class ClientController extends ResponseController
 
     public function getContents()
     {
-        return $this->success(ContentResource::collection(Content::with(['image','category'])->latest()->get()),"get contents for client");
+        $contents = Content::where('status' , true)->with(['image','category'])->latest()->paginate(6);
+        $paginationData = [
+            'current_page' => $contents->currentPage(),
+            'last_page' => $contents->lastPage(),
+        ];
+        return $this->success(['contents' => ContentResource::collection($contents) , 'pagination' => $paginationData], 'fetched all contents', 200);
     }
 
     public function getlimitedContents()
     {
-        return $this->success(ContentResource::collection(Content::with(['image','category'])->latest()->paginate(6)),"get contents for client");
+        return $this->success(ContentResource::collection(Content::where('status' , true)->with(['image','category'])->latest()->paginate(6)),"get contents for client");
     }
 
     public function getCategories()
@@ -38,7 +43,12 @@ class ClientController extends ResponseController
 
     public function getServices()
     {
-        return $this->success(ServiceResource::collection(Service::with('image')->get()),"get service for client");
+        $services = Service::with('image')->latest()->paginate(6);
+        $paginationData = [
+            'current_page' => $services->currentPage(),
+            'last_page' => $services->lastPage(),
+        ];
+        return $this->success(['services' => ServiceResource::collection($services) , 'pagination' => $paginationData], 'fetched all services', 200);
     }
 
     public function getLimitedServices()

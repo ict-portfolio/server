@@ -12,13 +12,35 @@ class UserController extends ResponseController
 {
     public function index()
     {
-        return $this->success(User::with('roles')->get() , "Fetched all users" , 200);
+        return $this->success(User::with('roles')->latest()->get() , "Fetched all users" , 200);
     }
 
     public function show(Request $req)
     {
         $user = $req->user();
         return $this->success(User::where('id' , $user->id)->with('roles')->first() , "User found" , 200);
+    }
+
+    public function makeAdmin($id)
+    {
+        $user = User::where('id' , $id)->first();
+        if ($user) {
+            $user->assignRole('admin');
+            return $this->success($user , "Successfully promoted to Admin" , 200);
+        } else {
+            return $this->fail('' , 'User Not Found' , 404);
+        }
+    }
+
+    public function demoteAdmin($id)
+    {
+        $user = User::where('id' , $id)->first();
+        if ($user) {
+            $user->removeRole('admin');
+            return $this->success($user , "Successfully demoted to User" , 200);
+        } else {
+            return $this->fail('' , 'User Not Found' , 404);
+        }
     }
 
     public function register(UserRequest $req)
