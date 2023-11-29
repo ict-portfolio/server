@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Client;
 
 use App\Models\Slider;
+use App\Models\Content;
+use App\Models\Roadmap;
+use App\Models\Service;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ResponseController;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\ContentResource;
-use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SliderResource;
-use App\Models\Category;
-use App\Models\Content;
-use App\Models\Service;
+use App\Http\Resources\ContentResource;
+use App\Http\Resources\RoadmapResource;
+use App\Http\Resources\ServiceResource;
+use App\Http\Resources\CategoryResource;
+use App\Http\Controllers\ResponseController;
 
 class ClientController extends ResponseController
 {
@@ -81,5 +83,20 @@ class ClientController extends ResponseController
             "contents" => ContentResource::collection($contents)
         ];
         return $this->success($data , "Contents By Category" , 200);
+    }
+
+    public function getFullRoadmap()
+    {
+        return $this->success(RoadmapResource::collection(Roadmap::latest()->get()),"ict roadmap");
+    }
+
+    public function getRoadmap($id)
+    {
+        $map = Roadmap::find($id);
+        if ($map) {
+            return $this->success(new RoadmapResource($map) , "roadmap" , 200);
+        } else {
+            return $this->fail([] , "Not Found!" , 404);
+        }
     }
 }

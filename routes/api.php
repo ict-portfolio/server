@@ -32,5 +32,7 @@ Route::get('/get-contents/{content}' , [ClientController::class , 'getContent'])
 Route::get('/get-services',[ClientController::class,'getServices']);
 Route::get('/get-limited-services',[ClientController::class,'getLimitedServices']);
 Route::get('/get-services/{service}' , [ClientController::class , 'getService']);
+Route::get('/roadmap' , [ClientController::class , 'getFullRoadmap']);
+Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
 
 Route::post('/contact' , [ContactController::class , 'store']);
