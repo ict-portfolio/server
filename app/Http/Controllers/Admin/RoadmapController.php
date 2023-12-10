@@ -34,6 +34,16 @@ class RoadmapController extends ResponseController
         return $this->success($map , 'Successfully saved to roadmap.' , 201);
     }
 
+    public function show($id)
+    {
+        $map = Roadmap::find($id);
+        if($map) {
+            return $this->success($map , "Roadmap" , 200);
+        } else {
+            return $this->fail([] , "Not Found!" , 404);
+        }
+    }
+
     public function update(Request $request , $id)
     {
         $map = Roadmap::find($id);
