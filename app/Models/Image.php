@@ -13,4 +13,5 @@ class Image extends Model
     {
         return $this->hasOne(Slider::class);
     }
+
 }

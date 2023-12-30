@@ -15,48 +15,44 @@ class ServiceController extends ResponseController
 {
     public function index()
     {
-        return $this->success(ServiceResource::collection(Service::with('image')->get()),"all servies");
+        return $this->success(ServiceResource::collection(Service::with('image')->get()), "all servies");
     }
     public function store(ServiceRequest $request)
     {
         $data = $request->validated();
-        $service = Service::create([
-            "name" => $request->name,
-            "image_id" => $request->image_id,
-            "paragraph" =>$request->paragraph,
-            "slug" => Str::slug($request->name)
-        ]);
-        return $this->success($service, "Created service",201);
+        $data['slug'] = Str::slug($data['name']);
+        $service = Service::create($data);
+        return $this->success($service, "Created service", 201);
     }
     public function show($id)
     {
-        $service = Service::where('id',$id)->with('image')->first();
-        if($service) {
-            return $this->success(new ServiceResource($service),"show detail");
-        }else {
-            return $this->fail(["message" => "service not found"],"not found",404);
+        $service = Service::where('id', $id)->with('image')->first();
+        if ($service) {
+            return $this->success(new ServiceResource($service), "show detail");
+        } else {
+            return $this->fail(["message" => "service not found"], "not found", 404);
         }
     }
     public function update(ServiceRequest $request, $id)
     {
-        $service = Service::where('id',$id)->first();
-        if($service) {
+        $service = Service::where('id', $id)->first();
+        if ($service) {
             $data = $request->validated();
             $data['slug'] = Str::slug($request->name);
             $service->update($data);
-            return $this->success($service,"updated the service");
-        }else {
-            return $this->fail(["message" => "service doesn't exist"],"not found",404);
+            return $this->success($service, "updated the service");
+        } else {
+            return $this->fail(["message" => "service doesn't exist"], "not found", 404);
         }
     }
     public function destroy($id)
     {
-        $service = Service::where('id',$id)->first();
-        if($service) {
+        $service = Service::where('id', $id)->first();
+        if ($service) {
             $service->delete();
-            return $this->success([],"serivce deleted");
-        }else {
-            return $this->fail(["message" => "service doesn't exist"], "not found",404);
+            return $this->success([], "serivce deleted");
+        } else {
+            return $this->fail(["message" => "service doesn't exist"], "not found", 404);
         }
     }
 }

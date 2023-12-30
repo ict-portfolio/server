@@ -12,13 +12,13 @@ class UserController extends ResponseController
 {
     public function index()
     {
-        return $this->success(User::with('roles')->get() , "Fetched all users" , 200);
+        return $this->success(User::with('roles')->get(), "Fetched all users", 200);
     }
 
     public function show(Request $req)
     {
         $user = $req->user();
-        return $this->success(User::where('id' , $user->id)->with('roles')->first() , "User found" , 200);
+        return $this->success(User::where('id', $user->id)->with('roles')->first(), "User found", 200);
     }
 
     public function register(UserRequest $req)
@@ -31,30 +31,30 @@ class UserController extends ResponseController
             $user->image_id = $req->image_id;
         }
         $user->save();
-        $user->assignRole('client');
+        $user->assignRole('admin');
 
         $token = $user->createToken("first-ict")->plainTextToken;
         return $this->success([
             "user" => $user,
             "token" => $token
-        ] , "Registered Successfully" , 201);
+        ], "Registered Successfully", 201);
     }
     public function login(UserRequest $req)
     {
-        $user = User::where('email' , $req->email)->first();
+        $user = User::where('email', $req->email)->first();
         if ($user) {
-            if (Hash::check($req->password , $user->password)) {
+            if (Hash::check($req->password, $user->password)) {
                 $user->created = Carbon::parse($user->created_at)->format('j-F-Y');
                 $token = $user->createToken("first-ict")->plainTextToken;
                 return $this->success([
                     "user" => $user,
                     "token" => $token
-                ] , "Logged in successfully" , 200);
+                ], "Logged in successfully", 200);
             } else {
-                return $this->fail(["password" => ["Wrong Password"]] , "Credential Error" , 422);
+                return $this->fail(["password" => ["Wrong Password"]], "Credential Error", 422);
             }
         } else {
-            return $this->fail(["email" => ["There is no user with this email"]] , "Credential Error" , 404);
+            return $this->fail(["email" => ["There is no user with this email"]], "Credential Error", 404);
         }
     }
 }
