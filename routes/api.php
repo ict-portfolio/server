@@ -18,12 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', [UserController::class , 'show']);
-Route::get('/users' , [UserController::class , 'index']);
 Route::post('/register' , [UserController::class , 'register'])->name('register');
 Route::post('/login' , [UserController::class , 'login'])->name('login');
 
 Route::get('/get-sliders',[ClientController::class,'getSliders']);
-
 Route::get('/get-categories',[ClientController::class,'getCategories']);
 Route::get('/get-contents-by-category/{category}' , [ClientController::class , 'contentsByCategory']);
 
@@ -34,5 +32,7 @@ Route::get('/get-contents/{content}' , [ClientController::class , 'getContent'])
 Route::get('/get-services',[ClientController::class,'getServices']);
 Route::get('/get-limited-services',[ClientController::class,'getLimitedServices']);
 Route::get('/get-services/{service}' , [ClientController::class , 'getService']);
+Route::get('/roadmap' , [ClientController::class , 'getFullRoadmap']);
+Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
 
 Route::post('/contact' , [ContactController::class , 'store']);

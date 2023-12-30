@@ -16,7 +16,12 @@ class ContentController extends ResponseController
 {
     public function index()
     {
-        return $this->success(ContentResource::collection(Content::with(['category','image'])->get()),"content datas");
+        $contents = Content::with(['category','image'])->latest()->paginate(10);
+        $paginationData = [
+            'current_page' => $contents->currentPage(),
+            'last_page' => $contents->lastPage(),
+        ];
+        return $this->success(['contents' => ContentResource::collection($contents) , 'pagination' => $paginationData], 'fetched all contents', 200);
     }
     public function store(ContentRequest $request)
     {

@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\Client;
 
 use App\Models\Slider;
+use App\Models\Content;
+use App\Models\Roadmap;
+use App\Models\Service;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ResponseController;
-use App\Http\Resources\CategoryResource;
-use App\Http\Resources\ContentResource;
-use App\Http\Resources\ServiceResource;
 use App\Http\Resources\SliderResource;
-use App\Models\Category;
-use App\Models\Content;
-use App\Models\Service;
+use App\Http\Resources\ContentResource;
+use App\Http\Resources\RoadmapResource;
+use App\Http\Resources\ServiceResource;
+use App\Http\Resources\CategoryResource;
+use App\Http\Controllers\ResponseController;
 
 class ClientController extends ResponseController
 {
@@ -23,12 +25,17 @@ class ClientController extends ResponseController
 
     public function getContents()
     {
-        return $this->success(ContentResource::collection(Content::with(['image','category'])->latest()->get()),"get contents for client");
+        $contents = Content::where('status' , true)->with(['image','category'])->latest()->paginate(6);
+        $paginationData = [
+            'current_page' => $contents->currentPage(),
+            'last_page' => $contents->lastPage(),
+        ];
+        return $this->success(['contents' => ContentResource::collection($contents) , 'pagination' => $paginationData], 'fetched all contents', 200);
     }
 
     public function getlimitedContents()
     {
-        return $this->success(ContentResource::collection(Content::with(['image','category'])->latest()->paginate(6)),"get contents for client");
+        return $this->success(ContentResource::collection(Content::where('status' , true)->with(['image','category'])->latest()->paginate(6)),"get contents for client");
     }
 
     public function getCategories()
@@ -38,7 +45,12 @@ class ClientController extends ResponseController
 
     public function getServices()
     {
-        return $this->success(ServiceResource::collection(Service::with('image')->get()),"get service for client");
+        $services = Service::with('image')->latest()->paginate(6);
+        $paginationData = [
+            'current_page' => $services->currentPage(),
+            'last_page' => $services->lastPage(),
+        ];
+        return $this->success(['services' => ServiceResource::collection($services) , 'pagination' => $paginationData], 'fetched all services', 200);
     }
 
     public function getLimitedServices()
@@ -71,5 +83,20 @@ class ClientController extends ResponseController
             "contents" => ContentResource::collection($contents)
         ];
         return $this->success($data , "Contents By Category" , 200);
+    }
+
+    public function getFullRoadmap()
+    {
+        return $this->success(RoadmapResource::collection(Roadmap::latest()->get()),"ict roadmap");
+    }
+
+    public function getRoadmap($id)
+    {
+        $map = Roadmap::find($id);
+        if ($map) {
+            return $this->success(new RoadmapResource($map) , "roadmap" , 200);
+        } else {
+            return $this->fail([] , "Not Found!" , 404);
+        }
     }
 }
