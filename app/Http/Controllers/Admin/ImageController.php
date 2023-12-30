@@ -15,7 +15,16 @@ class ImageController extends ResponseController
     {
         return $this->success(Image::with('slider')->paginate(10) , "All images" , 200);
     }
-
+    public function productImage($image)
+    {
+        $image = Request()->file('image');
+        $imageName = time()."_".$image->getClientOriginalName();
+        $image->storeAs('images',$imageName);
+        $data=new Image();
+        $data->image = $imageName;
+        $data->save();
+        return $this->success($data,"Image uploaded successfully.",201);
+    }
     public function store()
     {
         $validator = Validator::make(Request()->all(),[
