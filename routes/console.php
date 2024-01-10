@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -17,3 +19,18 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('create-roles', function() {
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'client']);
+});
+
+Artisan::command('create-admin', function() {
+    $admin = User::create([
+        "name" => "Admin",
+        "email" => "admin@gmail.com",
+        "password" => "internet",
+        "password_confirmation" => "internet",
+    ]);
+    $admin->assignRole("admin");
+});

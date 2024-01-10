@@ -26,7 +26,8 @@ class ServiceRequest extends FormRequest
         return [
             "image_id" => "required",
             "name" => "required|min:3",
-            "paragraph" => "required"
+            "paragraph" => "required",
+            "category_id" => "required"
         ];
     }
     protected function failedValidation(Validator $validator)

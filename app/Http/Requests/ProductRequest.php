@@ -30,6 +30,7 @@ class ProductRequest extends FormRequest
             'discount' => 'required',
             'instock' => 'required',
             'images' => 'required',
+            'category_id' => 'required'
         ];
     }
     protected function failedValidation(Validator $validator) {
