@@ -9,12 +9,12 @@ class Category extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function image()
-    {
-        return $this->belongsTo(Image::class);
-    }
     public function contents()
     {
         return $this->hasMany(Content::class);
+    }
+    public function root_category()
+    {
+        return $this->belongsTo(RootCategory::class,'root_category_id');
     }
 }

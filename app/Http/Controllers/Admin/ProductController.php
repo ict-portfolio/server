@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Image;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -32,6 +33,7 @@ class ProductController extends ResponseController
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
+        $data['slug'] = Str::slug($request->name);
         unset($data['images']);
         $product = Product::create($data);
         $this->productImageStore($request->images,$product->id);
@@ -40,7 +42,7 @@ class ProductController extends ResponseController
 
     public function index()
     {
-        $products = Product::with('images.image')->get();
+        $products = Product::all();
         $data = ProductResource::collection($products);
         return $this->success($data, "all products", 200);
     }
@@ -59,6 +61,7 @@ class ProductController extends ResponseController
         $product = Product::where('id', $id)->first();
         if ($product) {
             $data = $request->validated();
+            $data['slug'] = Str::slug($request->name);
             unset($data['images']);
             $product->update($data);
             $this->productImageDelete($product->id);
@@ -74,7 +77,7 @@ class ProductController extends ResponseController
         if ($product) {
             $this->productImageDelete($product->id);
             $product->delete();
-            return $this->success([], "serivce deleted");
+            return $this->success([], "product deleted");
         } else {
             return $this->fail(["message" => "product doesn't exist"], "not found", 404);
         }

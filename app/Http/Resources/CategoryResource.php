@@ -19,8 +19,9 @@ class CategoryResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "slug" => $this->slug,
-            "image_id" => $this->image_id,
-            "image" => $this->whenLoaded('image'),
+            "icon" => $this->icon,
+            "root_category_id" => $this->root_category_id,
+            "root_category" => $this->whenLoaded('root_category'),
             "created_at" => $this->created_at->format('d-m-y'),
         ];
     }

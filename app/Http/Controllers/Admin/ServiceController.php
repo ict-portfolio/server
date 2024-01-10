@@ -16,7 +16,7 @@ class ServiceController extends ResponseController
     public function index()
     {
         // return $this->success(ServiceResource::collection(Service::with('image')->get()), "all servies");
-        $services = Service::with('image')->latest()->paginate(10);
+        $services = Service::with('image','category')->latest()->paginate(10);
         $paginationData = [
             'current_page' => $services->currentPage(),
             'last_page' => $services->lastPage(),
@@ -32,7 +32,7 @@ class ServiceController extends ResponseController
     }
     public function show($id)
     {
-        $service = Service::where('id', $id)->with('image')->first();
+        $service = Service::where('id', $id)->with('image','category')->first();
         if ($service) {
             return $this->success(new ServiceResource($service), "show detail");
         } else {

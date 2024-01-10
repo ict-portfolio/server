@@ -15,37 +15,28 @@ class ImageController extends ResponseController
     {
         return $this->success(Image::with('slider')->paginate(10) , "All images" , 200);
     }
-    public function productImage($image)
+    public function store(Request $req)
     {
-        $image = Request()->file('image');
-        $imageName = time()."_".$image->getClientOriginalName();
-        $image->storeAs('images',$imageName);
-        $data=new Image();
-        $data->image = $imageName;
-        $data->save();
-        return $this->success($data,"Image uploaded successfully.",201);
-    }
-    public function store()
-    {
-        $validator = Validator::make(Request()->all(),[
-            "image" => "required|mimes:jpg,png,jpeg"
+        $validator = Validator::make($req->all(),[
+            "url" => "required|mimes:jpg,png,jpeg"
         ]);
         if($validator->fails()) {
             return $this->fail($validator->errors(),"Validation failed",422);
         }
-        $image = Request()->file('image');
-        $imageName = time()."_".$image->getClientOriginalName();
-        $image->storeAs('images',$imageName);
+        $localhostName = env("APP_URL","localhost:8000");
+        $url = $req->file('url');
+        $imageName = time()."_".$url->getClientOriginalName();
+        $url->storeAs('images',$imageName);
         $data=new Image();
-        $data->image = $imageName;
+        $data->url = $localhostName."/storage/".$imageName;
         $data->save();
         return $this->success($data,"Image uploaded successfully.",201);
     }
     public function destroy($id)
     {
-        $image = Image::where('id',$id)->first();
+        $image = Image::find($id);
         if($image) {
-            $slider = Slider::where('id',$id)->first();
+            $slider = Slider::find($id);
             if($slider) {
                 $slider->delete();
             }
