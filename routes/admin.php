@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoadmapController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PaperController;
 use App\Http\Controllers\Admin\RootCategoryController;
 
 Route::get('/users' , [UserController::class , 'index']);
@@ -30,6 +31,7 @@ Route::apiResource('sliders',SliderController::class);
 Route::apiResource('contacts' , ContactController::class);
 Route::apiResource('products' , ProductController::class);
 Route::apiResource('roadmap' , RoadmapController::class);
+Route::apiResources('papers',[PaperController::class]);
 Route::get('/fake-datas', function () {
     Category::factory()->count(5)->create();
     Content::factory()->count(15)->create();
