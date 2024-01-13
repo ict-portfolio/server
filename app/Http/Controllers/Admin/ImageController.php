@@ -26,9 +26,9 @@ class ImageController extends ResponseController
         $localhostName = env("APP_URL","localhost:8000");
         $url = $req->file('url');
         $imageName = time()."_".$url->getClientOriginalName();
-        $url->storeAs('images',$imageName);
+        $url = $url->storeAs('images',$imageName);
         $data=new Image();
-        $data->url = $localhostName."/storage/".$imageName;
+        $data->url = $localhostName."/storage/".$url;
         $data->save();
         return $this->success($data,"Image uploaded successfully.",201);
     }
