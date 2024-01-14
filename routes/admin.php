@@ -31,7 +31,7 @@ Route::apiResource('sliders',SliderController::class);
 Route::apiResource('contacts' , ContactController::class);
 Route::apiResource('products' , ProductController::class);
 Route::apiResource('roadmap' , RoadmapController::class);
-Route::apiResources('papers',[PaperController::class]);
+Route::apiResource('papers',PaperController::class);
 Route::get('/fake-datas', function () {
     Category::factory()->count(5)->create();
     Content::factory()->count(15)->create();
