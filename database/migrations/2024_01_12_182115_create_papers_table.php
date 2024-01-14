@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('file_id');
             $table->string('name');
             $table->text('description');
+            $table->boolean('downloadable');
             $table->timestamps();
         });
     }
