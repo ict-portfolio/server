@@ -36,3 +36,5 @@ Route::get('/roadmap' , [ClientController::class , 'getFullRoadmap']);
 Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
 
 Route::post('/contact' , [ContactController::class , 'store']);
+
+Route::get('/root-categories' , [ClientController::class , 'getRootCategories']);
