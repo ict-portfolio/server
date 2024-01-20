@@ -33,4 +33,5 @@ Artisan::command('create-admin', function() {
         "password_confirmation" => "internet",
     ]);
     $admin->assignRole("admin");
+
 });

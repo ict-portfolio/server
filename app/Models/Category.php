@@ -13,6 +13,14 @@ class Category extends Model
     {
         return $this->hasMany(Content::class);
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
     public function root_category()
     {
         return $this->belongsTo(RootCategory::class,'root_category_id');

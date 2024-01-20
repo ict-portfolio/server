@@ -21,6 +21,7 @@ class RootCategoryController extends ResponseController
         $validator = Validator::make($req->all(),[
             "name" => "required|min:3|unique:root_categories,name",
             "icon" => "required",
+            "type" => "required"
         ]);
         if($validator->fails()) {
             return $this->fail($validator->errors(),"Validation Fail",422);
@@ -32,6 +33,7 @@ class RootCategoryController extends ResponseController
         $data = RootCategory::create([
             "name" => $req->name,
             "slug" => Str::slug($req->name),
+            "type" => $req->type,
             "icon" => $localhostName."/storage/".$icon,
         ]);
         return $this->success($data,"Successfully Created the ".$data->name,201);
