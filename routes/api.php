@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Client\ClientController;
+use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,3 +38,13 @@ Route::get('/roadmap' , [ClientController::class , 'getFullRoadmap']);
 Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
 
 Route::post('/contact' , [ContactController::class , 'store']);
+
+Route::get('/get-latest-products',[ProductController::class,'getLatestProducts']);
+Route::get('/get-detail-products/{slug}',[ProductController::class,'productDetails']);
+Route::get('/related-products/{category_id}',[ProductController::class,'relatedProducts']);
+
+
+Route::get('/get-latest-services',[ServiceController::class,'getLatestServices']);
+Route::get('/get-detail-services/{slug}',[ServiceController::class,'serviceDetails']);
+Route::get('/related-services/{category_id}',[ServiceController::class,'relatedServices']);
+
