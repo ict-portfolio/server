@@ -42,14 +42,14 @@ class ProductController extends ResponseController
 
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category')->get();
         $data = ProductResource::collection($products);
         return $this->success($data, "all products", 200);
     }
 
     public function show($id)
     {
-        $product = Product::where('id', $id)->with('images.image')->first();
+        $product = Product::where('id', $id)->with('images.image' , 'category')->first();
         if ($product) {
             return $this->success(new ProductResource($product), "show detail");
         } else {

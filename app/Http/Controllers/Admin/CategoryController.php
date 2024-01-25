@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
+use App\Models\RootCategory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -57,5 +58,19 @@ class CategoryController extends ResponseController
         } else {
             return $this->fail([] , "Category Not Found" , 404);
         }
+    }
+    public function getCategoriesByType($type) {
+        $rootCategory = RootCategory::where('type',$type)->with('categories')->get();
+        $data = [];
+        foreach($rootCategory as $c) {
+            foreach($c->categories as $d) {
+                array_push($data , $d);
+            }
+        }
+        return $data;
+        // return $rootCategory;
+        // $category = Category::whereIn('id',$rootCategory)->get();
+        // return $category;
+
     }
 }

@@ -15,12 +15,19 @@ use App\Http\Resources\RoadmapResource;
 use App\Http\Resources\ServiceResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Controllers\ResponseController;
+use App\Models\RootCategory;
 
 class ClientController extends ResponseController
 {
     public function getSliders()
     {
         return $this->success(SliderResource::collection(Slider::where('status' , true)->with('image')->get()),"get sliders for client");
+    }
+
+    public function getRootCategories()
+    {
+        $rootCategories = RootCategory::with('categories')->get();
+        return $this->success($rootCategories , "all categories" , 200);
     }
 
     public function getContents()

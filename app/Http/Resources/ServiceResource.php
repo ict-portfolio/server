@@ -23,7 +23,7 @@ class ServiceResource extends JsonResource
             "created_at" => Carbon::parse($this->created_at)->format('j-F-Y'),
             "image_id" => $this->image_id,
             "category_id" => $this->category_id,
-            "category" => $this->whenLoaded("category"),
+            "category" => $this->category,
             "image" => $this->whenLoaded('image'),
         ];
     }
