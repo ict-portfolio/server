@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Client\ServiceController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CategoryController;
@@ -41,14 +40,14 @@ Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
 
 Route::post('/contact' , [ContactController::class , 'store']);
 
-Route::get('/get-latest-products',[ProductController::class,'getLatestProducts']);
-Route::get('/get-detail-products/{slug}',[ProductController::class,'productDetails']);
-Route::get('/related-products/{category_id}',[ProductController::class,'relatedProducts']);
+Route::get('/products',[ProductController::class,'getLatestProducts']);
+Route::get('/products/{slug}',[ProductController::class,'productDetails']);
+Route::get('/related-products/{product_id}/{category_id}/',[ProductController::class,'relatedProducts']);
 
 
-Route::get('/get-latest-services',[ServiceController::class,'getLatestServices']);
-Route::get('/get-detail-services/{slug}',[ServiceController::class,'serviceDetails']);
-Route::get('/related-services/{category_id}',[ServiceController::class,'relatedServices']);
+Route::get('/services',[ServiceController::class,'getLatestServices']);
+Route::get('/services/{slug}',[ServiceController::class,'serviceDetails']);
+Route::get('/related-services/{service_id}/{category_id}',[ServiceController::class,'relatedServices']);
 
 Route::get('/root-categories' , [ClientController::class , 'getRootCategories']);
-Route::get('/get-category/{slug}', [CategoryController::class , 'getProductOrServiceOfCategory']);
+Route::get('/category/{slug}', [CategoryController::class , 'getProductOrServiceOfCategory']);

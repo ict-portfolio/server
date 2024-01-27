@@ -11,14 +11,14 @@ use Illuminate\Http\Request;
 class ServiceController extends ResponseController
 {
     public function getLatestServices(){
-        $service = Service::latest()->paginate(3);
-        $data=ServiceResource::collection($service);
+        $services = Service::latest()->paginate(12);
+        $data=ServiceResource::collection($services);
         return $this->success($data,'latest services');
     }
 
     public function serviceDetails($slug)
     {
-        $service = Service::where('slug', $slug)->first();
+        $service = Service::where('slug', $slug)->with('image' , 'category')->first();
         if ($service) {
             return $this->success(new ServiceResource($service), "show detail");
         } else {
@@ -26,11 +26,11 @@ class ServiceController extends ResponseController
         }
     }
 
-    public function relatedServices($category_id)
+    public function relatedServices($service_id , $category_id)
     {
-        $service = Service::where('category_id', $category_id)->first();
-        if ($service) {
-            return $this->success(new ServiceResource($service), "show detail");
+        $services = Service::where('category_id', $category_id)->where('id', '<>', $service_id)->latest()->paginate(4);
+        if ($services) {
+            return $this->success(ServiceResource::collection($services), "show detail");
         } else {
             return $this->fail(["message" => "service not found"], "not found", 404);
         }

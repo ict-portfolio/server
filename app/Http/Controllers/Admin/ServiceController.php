@@ -16,7 +16,7 @@ class ServiceController extends ResponseController
     public function index()
     {
         // return $this->success(ServiceResource::collection(Service::with('image')->get()), "all servies");
-        $services = Service::with('image','category')->latest()->paginate(10);
+        $services = Service::with('image','category')->latest()->paginate(12);
         $paginationData = [
             'current_page' => $services->currentPage(),
             'last_page' => $services->lastPage(),
