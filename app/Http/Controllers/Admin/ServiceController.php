@@ -36,6 +36,7 @@ class ServiceController extends ResponseController
     public function index()
     {
         $services = Service::latest()->paginate(12);
+        return ServiceResource::collection($services);
         $paginationData = [
             'current_page' => $services->currentPage(),
             'last_page' => $services->lastPage(),
