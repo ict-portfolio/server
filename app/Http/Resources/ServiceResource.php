@@ -18,13 +18,17 @@ class ServiceResource extends JsonResource
         return[
             "id" => $this->id,
             "name" => $this->name,
-            "paragraph" => $this->paragraph,
             "slug" => $this->slug,
             "created_at" => Carbon::parse($this->created_at)->format('j-F-Y'),
             "category_id" => $this->category_id,
             "default_image" => $this->default_image,
-            "category" => $this->whenLoaded('category'),
+            "proposal" => $this->proposal,
+            "terms" => $this->terms,
+            "features" => $this->features,
+            "image_description" => $this->image_description,
             "images" => $this->whenLoaded('images'),
+            "category" => $this->whenLoaded('category'),
+            "category_name" => $this->category->name,
         ];
     }
 }
