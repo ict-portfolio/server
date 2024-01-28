@@ -24,9 +24,12 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "image_id" => "required",
-            "name" => "required|min:3",
-            "paragraph" => "required",
+            "name" => "required",
+            "images" => "required",
+            "proposal" => "required",
+            "terms" => "required",
+            "features" => "required",
+            "image_description" => "required",
             "category_id" => "required"
         ];
     }

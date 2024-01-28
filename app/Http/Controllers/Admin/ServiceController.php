@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Image;
 use App\Models\Service;
 use Illuminate\Support\Str;
+use App\Models\ServiceImage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
@@ -13,10 +15,27 @@ use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 
 class ServiceController extends ResponseController
 {
+    protected function serviceImageStore($images,$service_id)
+    {
+        foreach($images as $image) {
+            $serviceImage = new ServiceImage();
+            $serviceImage->service_id = $service_id;
+            $serviceImage->image_id = $image;
+            $serviceImage->save();
+        }
+    }
+
+    protected function serviceImageDelete($service)
+    {
+        $existProductImage = ServiceImage::where('service_id',$service);
+        if($existProductImage) {
+            $existProductImage->delete();
+        }
+    }
+
     public function index()
     {
-        // return $this->success(ServiceResource::collection(Service::with('image')->get()), "all servies");
-        $services = Service::with('image','category')->latest()->paginate(12);
+        $services = Service::latest()->paginate(12);
         $paginationData = [
             'current_page' => $services->currentPage(),
             'last_page' => $services->lastPage(),
@@ -26,13 +45,16 @@ class ServiceController extends ResponseController
     public function store(ServiceRequest $request)
     {
         $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
+        $data['slug'] = Str::slug($request->name);
+        $data['default_image'] = Image::where('id',$request->images[0])->first('url')['url'];
+        unset($data["images"]);
         $service = Service::create($data);
+        $this->serviceImageStore($request->images,$service->id);
         return $this->success($service, "Created service", 201);
     }
     public function show($id)
     {
-        $service = Service::where('id', $id)->with('image','category')->first();
+        $service = Service::where('id', $id)->with('images.image','category')->first();
         if ($service) {
             return $this->success(new ServiceResource($service), "show detail");
         } else {
@@ -45,7 +67,11 @@ class ServiceController extends ResponseController
         if ($service) {
             $data = $request->validated();
             $data['slug'] = Str::slug($request->name);
+            $data['default_image'] = Image::where('id',$request->images[0])->first('url')['url'];
+            unset($data['images']);
             $service->update($data);
+            $this->serviceImageDelete($service->id);
+            $this->serviceImageStore($request->images,$service->id);
             return $this->success($service, "updated the service");
         } else {
             return $this->fail(["message" => "service doesn't exist"], "not found", 404);
