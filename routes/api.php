@@ -44,10 +44,10 @@ Route::get('/products',[ProductController::class,'getLatestProducts']);
 Route::get('/products/{slug}',[ProductController::class,'productDetails']);
 Route::get('/related-products/{product_id}/{category_id}/',[ProductController::class,'relatedProducts']);
 
-
 Route::get('/services',[ServiceController::class,'getLatestServices']);
 Route::get('/services/{slug}',[ServiceController::class,'serviceDetails']);
 Route::get('/related-services/{service_id}/{category_id}',[ServiceController::class,'relatedServices']);
 
 Route::get('/root-categories' , [ClientController::class , 'getRootCategories']);
 Route::get('/category/{slug}', [CategoryController::class , 'getProductOrServiceOfCategory']);
+Route::get('/categories-by-type/{type}' , [CategoryController::class , 'getCategoriesByType']);
