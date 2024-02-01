@@ -35,12 +35,7 @@ class ServiceController extends ResponseController
 
     public function index()
     {
-        $services = Service::latest()->paginate(12);
-        $paginationData = [
-            'current_page' => $services->currentPage(),
-            'last_page' => $services->lastPage(),
-        ];
-        return $this->success(['services' => ServiceResource::collection($services) , 'pagination' => $paginationData], 'fetched all services', 200);
+        return $this->success(ServiceResource::collection(Service::all()), 'all services', 200);
     }
     public function store(ServiceRequest $request)
     {
