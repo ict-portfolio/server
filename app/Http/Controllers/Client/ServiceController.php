@@ -18,7 +18,7 @@ class ServiceController extends ResponseController
 
     public function serviceDetails($slug)
     {
-        $service = Service::where('slug', $slug)->with('image' , 'category')->first();
+        $service = Service::where('slug', $slug)->with('images.image' , 'category')->first();
         if ($service) {
             return $this->success(new ServiceResource($service), "show detail");
         } else {
