@@ -34,6 +34,7 @@ class ProductController extends ResponseController
     {
         $data = $request->validated();
         $data['slug'] = Str::slug($request->name);
+        $data['default_image'] = Image::where('id',$request->images[0])->first('url')['url'];
         unset($data['images']);
         $product = Product::create($data);
         $this->productImageStore($request->images,$product->id);
@@ -42,9 +43,7 @@ class ProductController extends ResponseController
 
     public function index()
     {
-        $products = Product::with('category')->get();
-        $data = ProductResource::collection($products);
-        return $this->success($data, "all products", 200);
+        return $this->success(ProductResource::collection(Product::all()), "all products", 200);
     }
 
     public function show($id)
@@ -62,6 +61,7 @@ class ProductController extends ResponseController
         if ($product) {
             $data = $request->validated();
             $data['slug'] = Str::slug($request->name);
+            $data['default_image'] = Image::where('id',$request->images[0])->first('url')['url'];
             unset($data['images']);
             $product->update($data);
             $this->productImageDelete($product->id);
