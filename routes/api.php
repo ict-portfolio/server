@@ -47,3 +47,4 @@ Route::get('/related-services/{service_id}/{category_id}',[ServiceController::cl
 
 Route::get('/root-categories' , [ClientController::class , 'getRootCategories']);
 Route::get('/category/{slug}', [CategoryController::class , 'getProductOrServiceOfCategory']);
+Route::get('/categories-by-type/{type}' , [CategoryController::class , 'getCategoriesByType']);
