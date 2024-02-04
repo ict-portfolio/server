@@ -11,7 +11,7 @@ use App\Http\Controllers\ResponseController;
 class ContentController extends ResponseController
 {
     public function getLatestContents(){
-        $contents = Content::latest()->paginate(12);
+        $contents = Content::with('image')->latest()->paginate(12);
         $data=ContentResource::collection($contents);
         return $this->success($data,'latest contents');
     }
