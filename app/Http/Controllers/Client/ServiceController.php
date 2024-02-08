@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 
 class ServiceController extends ResponseController
 {
-    public function getLatestServices(){
-        $services = Service::latest()->paginate(12);
+    public function getLatestServices(Request $request){
+        $services = Service::latest()->paginate($request->input('limit'));
+        $paginationData = [
+            'current_page' => $services->currentPage(),
+            'last_page' => $services->lastPage(),
+        ];
         $data=ServiceResource::collection($services);
-        return $this->success($data,'latest services');
+        return $this->success(['services' => $data , 'meta' => $paginationData],'latest services');
     }
 
     public function serviceDetails($slug)

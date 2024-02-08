@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 
 class ProductController extends ResponseController
 {
-    public function getLatestProducts(){
-        $product = Product::latest()->paginate(12);
-        $data=ProductResource::collection($product);
-        return $this->success($data,'latest products');
+    public function getLatestProducts(Request $request){
+        $products = Product::latest()->paginate($request->input('limit'));
+        $paginationData = [
+            'current_page' => $products->currentPage(),
+            'last_page' => $products->lastPage(),
+        ];
+        $data=ProductResource::collection($products);
+        return $this->success(['products' => $data , 'meta' => $paginationData],'latest products');
     }
 
     public function productDetails($slug)
