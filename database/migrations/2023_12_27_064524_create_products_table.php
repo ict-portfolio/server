@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('price');
             $table->string('discount');
+            $table->string('default_image');
             $table->boolean('instock')->default(true);
             $table->timestamps();
         });

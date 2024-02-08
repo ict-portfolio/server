@@ -32,7 +32,7 @@ class ServiceController extends ResponseController
 
     public function relatedServices($service_id , $category_id)
     {
-        $services = Service::where('category_id', $category_id)->where('id', '<>', $service_id)->latest()->paginate(4);
+        $services = Service::where('category_id', $category_id)->where('id', '!=', $service_id)->latest()->paginate(4);
         if ($services) {
             return $this->success(ServiceResource::collection($services), "show detail");
         } else {
