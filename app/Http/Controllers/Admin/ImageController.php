@@ -13,7 +13,7 @@ class ImageController extends ResponseController
 {
     public function index()
     {
-        return $this->success(Image::with('slider')->paginate(10) , "All images" , 200);
+        return $this->success(Image::with('slider')->paginate(20) , "All images" , 200);
     }
     public function store(Request $req)
     {
