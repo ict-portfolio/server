@@ -53,7 +53,7 @@ class UserController extends ResponseController
             $user->image_id = $req->image_id;
         }
         $user->save();
-        $user->assignRole('admin');
+        $user->assignRole('client');
 
         $token = $user->createToken("first-ict")->plainTextToken;
         return $this->success([

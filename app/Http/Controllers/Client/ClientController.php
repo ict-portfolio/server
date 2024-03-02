@@ -3,36 +3,22 @@
 namespace App\Http\Controllers\Client;
 
 use App\Models\Slider;
-use App\Models\Content;
+use App\Models\Product;
 use App\Models\Roadmap;
-use App\Models\Service;
 use App\Models\Category;
+use App\Models\RootCategory;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\SliderResource;
-use App\Http\Resources\ContentResource;
 use App\Http\Resources\RoadmapResource;
-use App\Http\Resources\ServiceResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Controllers\ResponseController;
-use App\Models\RootCategory;
+use App\Models\Service;
 
 class ClientController extends ResponseController
 {
     public function getSliders()
     {
         return $this->success(SliderResource::collection(Slider::where('status' , true)->with('image')->get()),"get sliders for client");
-    }
-
-    public function getRootCategories()
-    {
-        $rootCategories = RootCategory::with('categories')->get();
-        return $this->success($rootCategories , "all categories" , 200);
-    }
-
-    public function getCategories()
-    {
-        return $this->success(CategoryResource::collection(Category::with('image')->get()),"get categories for client");
     }
 
     public function getFullRoadmap()
@@ -48,5 +34,12 @@ class ClientController extends ResponseController
         } else {
             return $this->fail([] , "Not Found!" , 404);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $products = Product::where('name' , 'LIKE' , '%' . $request->input('query') . '%')->latest()->get();
+        $services = Service::where('name' , 'LIKE' , '%' . $request->input('query') . '%')->latest()->get();
+        return $this->success(['products' => $products , 'services' => $services] , 'result' , 200);
     }
 }
