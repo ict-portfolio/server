@@ -9,6 +9,7 @@ use App\Http\Controllers\Client\ContentController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\ServiceController;
 use App\Http\Controllers\Client\CategoryController;
+use App\Http\Controllers\Client\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +50,4 @@ Route::get('/category/{slug}', [CategoryController::class , 'getProductOrService
 Route::get('/categories-by-type/{type}' , [CategoryController::class , 'getCategoriesByType']);
 
 Route::get('/search' , [ClientController::class , 'search']);
+Route::post('/appointments',[AppointmentController::class, 'store'])->middleware('auth:sanctum');
