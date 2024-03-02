@@ -27,7 +27,6 @@ Route::post('/register' , [UserController::class , 'register'])->name('register'
 Route::post('/login' , [UserController::class , 'login'])->name('login');
 
 Route::get('/get-sliders',[ClientController::class,'getSliders']);
-Route::get('/get-categories',[ClientController::class,'getCategories']);
 
 Route::get('/roadmap' , [ClientController::class , 'getFullRoadmap']);
 Route::get('/roadmap/{id}' , [ClientController::class , 'getRoadmap']);
@@ -46,8 +45,9 @@ Route::get('/services',[ServiceController::class,'getLatestServices']);
 Route::get('/services/{slug}',[ServiceController::class,'serviceDetails']);
 Route::get('/related-services/{service_id}/{category_id}',[ServiceController::class,'relatedServices']);
 
-Route::get('/root-categories' , [ClientController::class , 'getRootCategories']);
+Route::get('/root-categories' , [CategoryController::class , 'getRootCategories']);
 Route::get('/category/{slug}', [CategoryController::class , 'getProductOrServiceOfCategory']);
 Route::get('/categories-by-type/{type}' , [CategoryController::class , 'getCategoriesByType']);
 
+Route::get('/search' , [ClientController::class , 'search']);
 Route::post('/appointments',[AppointmentController::class, 'store'])->middleware('auth:sanctum');

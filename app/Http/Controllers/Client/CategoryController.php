@@ -10,6 +10,12 @@ use App\Models\RootCategory;
 
 class CategoryController extends ResponseController
 {
+    public function getRootCategories()
+    {
+        $rootCategories = RootCategory::with('categories')->get();
+        return $this->success($rootCategories , "all categories" , 200);
+    }
+
     public function getProductOrServiceOfCategory ($slug)
     {
         $data = Category::where('slug' , $slug)->with('root_category' , 'products' , 'services')->first();
